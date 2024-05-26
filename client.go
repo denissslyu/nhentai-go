@@ -222,7 +222,8 @@ func (c *Client) parseTags(tagSelections *goquery.Selection) []TagPageTag {
 func (c *Client) parseLastPage(doc *goquery.Document) (int, error) {
 	lastPageSelection := doc.Find(".pagination>.last")
 	if lastPageSelection.Size() == 0 {
-		return 0, errors.New("NOT MATCH PAGE")
+		// 最后一页
+		return 0, nil
 	}
 	lastPageHref, ex := lastPageSelection.Attr("href")
 	if !ex {
