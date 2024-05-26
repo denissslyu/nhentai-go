@@ -1,4 +1,4 @@
-module github.com/niuhuan/nhentai-go
+module github.com/denissslyu/nhentai-go
 
 go 1.17
 
