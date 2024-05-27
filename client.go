@@ -26,8 +26,43 @@ const MirrorOrigin = "nhentai.net"
 type Client struct {
 	// http.Client 继承HTTP客户端
 	http.Client
-	Cookie    string
-	UserAgent string
+	cookie    string
+	userAgent string
+	proxy     string
+}
+
+func NewClient() *Client {
+	return &Client{}
+}
+
+func (c *Client) SetCookie(cookie string) *Client {
+	c.cookie = cookie
+	return c
+}
+
+func (c *Client) SetUserAgent(userAgent string) *Client {
+	c.userAgent = userAgent
+	return c
+}
+
+func (c *Client) SetProxy(proxyURL string) error {
+	if proxyURL == "" {
+		c.Transport = &http.Transport{
+			Proxy: nil,
+		}
+		return nil
+	}
+	// 解析代理地址
+	proxy, err := url.Parse(proxyURL)
+	if err != nil {
+		return err
+	}
+
+	c.Transport = &http.Transport{
+		Proxy: http.ProxyURL(proxy),
+	}
+
+	return nil
 }
 
 // Comics 列出漫画
@@ -152,8 +187,8 @@ func (c *Client) Get(url string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Add("Cookie", c.Cookie)
-	request.Header.Add("User-Agent", c.UserAgent)
+	request.Header.Add("Cookie", c.cookie)
+	request.Header.Add("User-Agent", c.userAgent)
 	return c.Client.Do(request)
 }
 
