@@ -166,8 +166,12 @@ func (c *Client) Get(url string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Add("Cookie", c.cookie)
-	request.Header.Add("User-Agent", c.userAgent)
+	if c.cookie != "" {
+		request.Header.Add("Cookie", c.cookie)
+	}
+	if c.userAgent != "" {
+		request.Header.Add("User-Agent", c.userAgent)
+	}
 	return c.Client.Do(request)
 }
 
