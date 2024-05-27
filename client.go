@@ -28,7 +28,6 @@ type Client struct {
 	http.Client
 	cookie    string
 	userAgent string
-	proxy     string
 }
 
 func NewClient() *Client {
@@ -43,26 +42,6 @@ func (c *Client) SetCookie(cookie string) *Client {
 func (c *Client) SetUserAgent(userAgent string) *Client {
 	c.userAgent = userAgent
 	return c
-}
-
-func (c *Client) SetProxy(proxyURL string) error {
-	if proxyURL == "" {
-		c.Transport = &http.Transport{
-			Proxy: nil,
-		}
-		return nil
-	}
-	// 解析代理地址
-	proxy, err := url.Parse(proxyURL)
-	if err != nil {
-		return err
-	}
-
-	c.Transport = &http.Transport{
-		Proxy: http.ProxyURL(proxy),
-	}
-
-	return nil
 }
 
 // Comics 列出漫画
