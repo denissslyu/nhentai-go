@@ -294,13 +294,13 @@ func (c *Client) PageThumbnailUrl(mediaId int, num int, t string) string {
 
 // GetExtension 使用type获得拓展名
 func (c *Client) GetExtension(t string) string {
-	// Official only j
-	if t == "j" {
+	switch t {
+	case "j":
 		return "jpg"
-	}
-	// redundancy
-	if t == "p" {
+	case "p":
 		return "png"
+	case "g":
+		return "gif"
 	}
 	return ""
 }
