@@ -84,7 +84,7 @@ func (c *Client) ComicByRawCondition(conditions string, page int) (*ComicPageDat
 // ComicsByTagName 列出标签下的漫画
 // https://nhentai.net/tag/group/?page=1
 func (c *Client) ComicsByTagName(tag string, page int) (*ComicPageData, error) {
-	tag = strings.ReplaceAll(strings.Join(strings.Fields(strings.TrimSpace(tag)), " "), " ", "-")
+	tag = BuildNameForUrl(tag)
 	urlStr := fmt.Sprintf("https://%s/tag/%s/?page=%d", MirrorOrigin, tag, page)
 	return c.parsePage(urlStr)
 }
@@ -92,7 +92,7 @@ func (c *Client) ComicsByTagName(tag string, page int) (*ComicPageData, error) {
 // ComicsByArtist 按artist列出漫画
 // https://nhentai.net/tag/group/?page=1
 func (c *Client) ComicsByArtist(artist string, page int) (*ComicPageData, error) {
-	artist = strings.ReplaceAll(strings.Join(strings.Fields(strings.TrimSpace(artist)), " "), " ", "-")
+	artist = BuildNameForUrl(artist)
 	urlStr := fmt.Sprintf("https://%s/artist/%s/?page=%d", MirrorOrigin, artist, page)
 	return c.parsePage(urlStr)
 }
@@ -100,7 +100,7 @@ func (c *Client) ComicsByArtist(artist string, page int) (*ComicPageData, error)
 // ComicsByGroup 按group列出漫画
 // https://nhentai.net/tag/group/?page=1
 func (c *Client) ComicsByGroup(group string, page int) (*ComicPageData, error) {
-	group = strings.ReplaceAll(strings.Join(strings.Fields(strings.TrimSpace(group)), " "), " ", "-")
+	group = BuildNameForUrl(group)
 	urlStr := fmt.Sprintf("https://%s/group/%s/?page=%d", MirrorOrigin, group, page)
 	return c.parsePage(urlStr)
 }
@@ -320,4 +320,12 @@ func (c *Client) GetExtension(t string) string {
 		return "gif"
 	}
 	return ""
+}
+
+func BuildNameForUrl(str string) string {
+	str = strings.ReplaceAll(str, "|", " ")
+	str = strings.ReplaceAll(str, ".", " ")
+	str = strings.TrimSpace(str)
+	fields := strings.Fields(str)
+	return strings.Join(fields, "-")
 }
