@@ -324,6 +324,7 @@ func (c *Client) GetExtension(t string) string {
 
 func BuildNameForUrl(str string) string {
 	str = strings.ReplaceAll(str, "|", " ")
+	str = strings.ReplaceAll(str, "-", " ")
 	str = strings.ReplaceAll(str, ".", " ")
 	str = strings.TrimSpace(str)
 	fields := strings.Fields(str)
